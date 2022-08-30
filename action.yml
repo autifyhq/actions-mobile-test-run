@@ -1,0 +1,58 @@
+name: 'Run test on Autify for Mobile'
+description: 'Run a test plan on Autify for Mobile.'
+author: 'Autify Inc.'
+inputs:
+  access-token:
+    required: true
+    description: 'Access token of Autify for Mobile.'
+  autify-test-url:
+    required: true
+    description: 'URL of a test plan e.g. https://moible-app.autify.com/projects/<ID>/test_plans/<ID>'
+  build-id:
+    required: false
+    description: 'ID of the already uploaded build. (Note: Either build-id or build-path is required but not both)'
+  build-path:
+    required: false
+    description: 'File path to the iOS app (*.app) or Android app (*.apk). (Note: Either build-id or build-path is required but not both)'
+  wait:
+    required: false
+    default: 'false'
+    description: 'When true, the action waits until the test finishes.'
+  timeout:
+    required: false
+    description: 'Timeout seconds when waiting.'
+  autify-path:
+    required: false
+    default: 'autify'
+    description: 'A path to `autify`. If set, this action will not install autify-cli.'
+
+outputs:
+  exit-code:
+    description: 'Exit code of autify-cli. 0 means succeeded.'
+    value: ${{ steps.run.outputs.exit-code }}
+  log:
+    description: 'Log of stdout and stderr.'
+    value: ${{ steps.run.outputs.log }}
+  build-id:
+    description: 'Returned build id on the workspace.'
+    value: ${{ steps.run.outputs.build-id }}
+  result-url:
+    description: 'Test result URL on Autify for Mobile'
+    value: ${{ steps.run.outputs.result-url }}
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: autifyhq/actions-setup-cli@v1
+      if: ${{ inputs.autify-path == 'autify' }}
+    - id: run
+      run: $GITHUB_ACTION_PATH/script.bash
+      shell: bash
+      env:
+        INPUT_ACCESS_TOKEN: ${{ inputs.access-token }}
+        INPUT_AUTIFY_TEST_URL: ${{ inputs.autify-test-url }}
+        INPUT_BUILD_ID: ${{ inputs.build-id }}
+        INPUT_BUILD_PATH: ${{ inputs.build-path }}
+        INPUT_WAIT: ${{ inputs.wait }}
+        INPUT_TIMEOUT: ${{ inputs.timeout }}
+        INPUT_AUTIFY_PATH: ${{ inputs.autify-path }}
