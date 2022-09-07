@@ -5,7 +5,7 @@
 # Run test on Autify for Mobile
 Run a test plan on Autify for Mobile.
 
-See also https://github.com/autifyhq/autify-cli#autify-mobile-test-run-test-plan-url
+See our official documentation to get started: https://help.autify.com/mobile/docs/github-actions-integration
 
 ## Usage
 
