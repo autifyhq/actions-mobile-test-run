@@ -34,7 +34,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-      - uses: autifyhq/actions-setup-cli@v1 # This is needed because we override `autify-path`.
+      - uses: autifyhq/actions-setup-cli@v2 # This is needed because we override `autify-path`.
       - run: npm install @autifyhq/autify-cli-integration-test
       - run: npx autify-mobile-generate-fake-app
 
