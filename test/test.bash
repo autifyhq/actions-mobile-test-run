@@ -11,6 +11,7 @@ function before() {
   unset INPUT_BUILD_PATH
   unset INPUT_WAIT
   unset INPUT_TIMEOUT
+  unset INPUT_MAX_RETRY_COUNT
   echo "=== TEST ==="
 }
 
@@ -140,6 +141,24 @@ function test_output() {
   test_log "$log_file"
   test_output exit-code "0"
   test_output log "autify mobile test run a --build-id=b --wait -t=300\n$(cat "$log_file")"
+  test_output build-id "BBB"
+  test_output result-url "https://result"
+}
+
+{
+  before
+  export INPUT_AUTIFY_PATH="./test/autify-mock"
+  export INPUT_ACCESS_TOKEN=token
+  export INPUT_AUTIFY_TEST_URL=a
+  export INPUT_BUILD_ID=b
+  export INPUT_WAIT=true
+  export INPUT_TIMEOUT=300
+  export INPUT_MAX_RETRY_COUNT=1
+  test_command "autify mobile test run a --build-id=b --wait -t=300 --max-retry-count=1"
+  test_code 0
+  test_log "$log_file"
+  test_output exit-code "0"
+  test_output log "autify mobile test run a --build-id=b --wait -t=300 --max-retry-count=1\n$(cat "$log_file")"
   test_output build-id "BBB"
   test_output result-url "https://result"
 }
