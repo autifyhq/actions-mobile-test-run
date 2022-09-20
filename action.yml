@@ -24,7 +24,11 @@ inputs:
   autify-path:
     required: false
     default: 'autify'
-    description: 'A path to `autify`. If set, this action will not install autify-cli.'
+    description: 'A path to `autify` which will be used to invoke Autify CLI internally. Default is searching from PATH.'
+  autify-cli-installer-url:
+    required: false
+    default: "https://autify-cli-assets.s3.amazonaws.com/autify-cli/channels/stable/install-cicd.bash"
+    description: 'Autify CLI installer URL'
 
 outputs:
   exit-code:
@@ -43,8 +47,13 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    - uses: autifyhq/actions-setup-cli@v1
-      if: ${{ inputs.autify-path == 'autify' }}
+    - uses: autifyhq/actions-setup-cli@v2
+      with:
+        shell-installer-url: ${{ inputs.autify-cli-installer-url }}
+    # Only for integration tests.
+    - if: ${{ env.AUTIFY_CLI_INTEGRATION_TEST_INSTALL == '1' }}
+      run: autify-mobile-generate-fake-app
+      shell: bash
     - id: run
       run: $GITHUB_ACTION_PATH/script.bash
       shell: bash
