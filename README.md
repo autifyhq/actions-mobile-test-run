@@ -72,6 +72,9 @@ wait:
 timeout:
   required: false
   description: "Timeout seconds when waiting."
+max-retry-count:
+  required: false
+  description: "Maximum retry count while waiting. The command can take up to `timeout * (max-retry-count + 1)`. Only effective with `wait`"
 autify-path:
   required: false
   default: "autify"

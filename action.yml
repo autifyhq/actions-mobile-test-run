@@ -21,6 +21,9 @@ inputs:
   timeout:
     required: false
     description: 'Timeout seconds when waiting.'
+  max-retry-count:
+    required: false
+    description: "Maximum retry count while waiting. The command can take up to `timeout * (max-retry-count + 1)`. Only effective with `wait`"
   autify-path:
     required: false
     default: 'autify'
@@ -64,4 +67,5 @@ runs:
         INPUT_BUILD_PATH: ${{ inputs.build-path }}
         INPUT_WAIT: ${{ inputs.wait }}
         INPUT_TIMEOUT: ${{ inputs.timeout }}
+        INPUT_MAX_RETRY_COUNT: ${{ inputs.max-retry-count }}
         INPUT_AUTIFY_PATH: ${{ inputs.autify-path }}
