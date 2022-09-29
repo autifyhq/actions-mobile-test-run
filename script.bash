@@ -50,6 +50,8 @@ if [ -n "${INPUT_MAX_RETRY_COUNT}" ]; then
   add_args "--max-retry-count=${INPUT_MAX_RETRY_COUNT}"
 fi
 
+export AUTIFY_CLI_USER_AGENT_SUFFIX="${AUTIFY_CLI_USER_AGENT_SUFFIX:=github-actions-mobile-test-run}"
+
 OUTPUT=$(mktemp)
 AUTIFY_MOBILE_ACCESS_TOKEN=${INPUT_ACCESS_TOKEN} ${AUTIFY} mobile test run "${ARGS[@]}" 2>&1 | tee "$OUTPUT"
 exit_code=${PIPESTATUS[0]}
