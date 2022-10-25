@@ -2,8 +2,10 @@
 
 log_file=$(dirname "$0")/log
 log_fail_file=$(dirname "$0")/log-fail
+export GITHUB_OUTPUT
 
 function before() {
+  GITHUB_OUTPUT=$(mktemp)
   unset INPUT_AUTIFY_PATH
   unset INPUT_ACCESS_TOKEN
   unset INPUT_AUTIFY_TEST_URL
@@ -49,7 +51,7 @@ function test_log() {
   local file=$1
   local result
   result=$(mktemp)
-  ./script.bash | tail -n+2 | grep -E -v ^::set-output > "$result"
+  ./script.bash | tail -n+2 > "$result"
 
   if (git diff --no-index --quiet -- "$file" "$result"); then
     echo "Passed log:"
@@ -61,12 +63,14 @@ function test_log() {
 }
 
 function test_output() {
+  echo > "$GITHUB_OUTPUT"
   local name=$1
   local expected
   expected=$(mktemp)
   echo -e "$2" > "$expected"
+  ./script.bash > /dev/null
   local output
-  output=$(./script.bash | grep -E ^::set-output | grep name="${name}":: | awk -F'::' '{print $3}')
+  output=$(grep -e "^${name}=" "$GITHUB_OUTPUT" | cut -f2- -d=)
   output="${output//'%25'/%}"
   output="${output//'%0A'/$'\n'}"
   output="${output//'%0D'/$'\r'}"
