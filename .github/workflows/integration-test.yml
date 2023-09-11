@@ -18,7 +18,7 @@ jobs:
       AUTIFY_CLI_INTEGRATION_TEST_INSTALL: 1
       AUTIFY_TEST_WAIT_INTERVAL_SECOND: 0
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
 
       - id: mobile-test-run
