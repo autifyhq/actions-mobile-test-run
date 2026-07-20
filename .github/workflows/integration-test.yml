@@ -19,7 +19,7 @@ jobs:
       AUTIFY_TEST_WAIT_INTERVAL_SECOND: 0
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
 
       - id: mobile-test-run
         uses: ./
